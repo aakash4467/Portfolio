@@ -1,10 +1,12 @@
 import About from "@/components/About";
-import Education from "@/components/Education";
 import HomeContainer from "@/components/HomeContainer";
 import Navbar from "@/components/Navbar";
 import { useLocoScroll } from "@/hooks/useLocoScroll";
 import React, { useEffect, useRef, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
+import ExperienceSkill from "@/components/ExperienceSkills";
+import Projects from "@/components/Projects";
+import Contact from "@/components/Contact";
 
 const Index = () => {
   const [preloader, setPreloader] = useState(true);
@@ -49,7 +51,9 @@ const Index = () => {
           <Navbar />
           <HomeContainer />
           <About />
-          <Education />
+          <ExperienceSkill />
+          <Projects />
+          <Contact />
         </>
       )}
     </div>
