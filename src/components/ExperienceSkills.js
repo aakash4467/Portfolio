@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Moru from "../assets/images/moru.png";
 import HTML from "../assets/images/html.png";
 import CSS from "../assets/images/css.png";
@@ -8,11 +8,42 @@ import ReactJS from "../assets/images/react.png";
 import Mongo from "../assets/images/mongo-db.png";
 import Next from "../assets/images/next.png";
 import Git from "../assets/images/git.png";
+import Github from "../assets/images/github.png";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ExperienceSkill = () => {
+  const experienceRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      experienceRef.current,
+      {
+        opacity: 0,
+        y: 100,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: experienceRef.current,
+          start: "top 80%",
+          end: "90% 60%",
+          scrub: 1,
+        },
+      }
+    );
+  }, []);
   return (
     <>
-      <div className="text-white mt-[150px] h-[900px] w-[100%]">
+      <div
+        ref={experienceRef}
+        className="text-white mt-[150px] h-[900px] w-[100%]"
+        id="experience"
+      >
         <h1 className="text-[50px]">Experience & Skills</h1>
         <div className="flex justify-center h-[100%] w-[100%] mt-[120px] relative">
           <div className="absolute flex items-center left-[163px] top-[100px]">
@@ -46,7 +77,7 @@ const ExperienceSkill = () => {
           <div className="h-[20px] w-[20px] bg-white rounded-full left-[728px] absolute top-[360px]"></div>
         </div>
       </div>
-      <div className="flex gap-[45px] items-center mt-[50px] h-[200px] w-[1500px] rounded-[30px] bg-[#333333] ">
+      <div className="flex gap-[45px] items-center scroll overflow-hidden mt-[50px] h-[200px] w-[1500px] rounded-[30px] bg-[#333333] ">
         <Image
           src={HTML}
           alt="html"
@@ -62,6 +93,7 @@ const ExperienceSkill = () => {
           className="h-[145px] w-[145px] rounded-[45px]"
         />
         <Image src={Git} alt="git" className="h-[160px] w-[160px]" />
+        <Image src={Github} alt="github" className="h-[160px] w-[160px]" />
       </div>
     </>
   );

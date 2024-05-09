@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 import Profile from "../assets/images/profile.png";
 import gsap from "gsap";
+import Link from "next/link";
 
 const HomeContainer = () => {
   useEffect(() => {
@@ -69,9 +70,13 @@ const HomeContainer = () => {
             Scroll
           </button>
           <span className="text-[37px]">OR</span>
-          <button className="bg-white h-[70px] text-3xl text-[#403E3E] rounded-xl w-[220px] button">
-            Download CV
-          </button>
+          <Link
+            target="_blank"
+            href="/CV.pdf"
+            className="bg-white h-[70px] text-3xl text-[#403E3E] flex justify-center items-center rounded-xl w-[220px] button"
+          >
+            Resume
+          </Link>
         </div>
       </div>
       <div className="back flex mt-16 mr-[40px] justify-center rounded-full w-[40%] h-[80%]">
