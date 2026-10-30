@@ -10,28 +10,15 @@ import Contact from "@/components/Contact";
 
 const Index = () => {
   const [preloader, setPreloader] = useState(true);
-  const [timer, setTimer] = useState(3);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setPreloader(false);
+    }, 2500);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useLocoScroll();
 
-  const id = useRef(null);
-
-  const clear = () => {
-    window.clearInterval(id.current);
-    setPreloader(false);
-  };
-
-  useEffect(() => {
-    id.current = window.setInterval(() => {
-      setTimer((timer) => timer - 1);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    if (timer === 0) {
-      clear();
-    }
-  }, [timer]);
   return (
     <div className="h-[100%]" id="main-container" data-scroll-conatainer>
       {preloader ? (
