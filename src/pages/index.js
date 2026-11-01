@@ -1,13 +1,17 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import Head from "next/head";
 import HomePage from "../pages/home";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main className=" mx-[180px]">
+    <>
+      <Head>
+        <title>Aakash | Web Developer & Designer</title>
+        <meta
+          name="description"
+          content="Portfolio of Aakash, a web designer and full-stack developer."
+        />
+      </Head>
       <HomePage />
-    </main>
+    </>
   );
 }

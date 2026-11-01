@@ -1,11 +1,18 @@
 "use client";
 import { useEffect } from "react";
 
-export const useLocoScroll = (start) => {
+export const useLocoScroll = () => {
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let instance;
+    let cancelled = false;
     (async () => {
       const LocomotiveScroll = (await import("locomotive-scroll")).default;
-      const locomotivescroll = new LocomotiveScroll();
+      if (!cancelled) instance = new LocomotiveScroll();
     })();
+    return () => {
+      cancelled = true;
+      instance?.destroy?.();
+    };
   }, []);
 };
