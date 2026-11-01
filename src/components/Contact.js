@@ -3,7 +3,7 @@ import emailjs from "@emailjs/browser";
 import SectionTitle from "./SectionTitle";
 
 const SERVICE_ID =
-  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_u8mb4sh";
+  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_02is03v";
 const TEMPLATE_ID =
   process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_dvbv4tn";
 const PUBLIC_KEY =
