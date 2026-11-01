@@ -1,5 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Moru from "../assets/images/moru.png";
 import HTML from "../assets/images/html.png";
 import CSS from "../assets/images/css.png";
@@ -9,93 +11,149 @@ import Mongo from "../assets/images/mongo-db.png";
 import Next from "../assets/images/next.png";
 import Git from "../assets/images/git.png";
 import Github from "../assets/images/github.png";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import SectionTitle from "./SectionTitle.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Add new entries here; they alternate left/right on desktop and stack on mobile.
+const experience = [
+  {
+    date: "03-2023",
+    title: "Moru: Digital Wallet",
+    href: "https://moru.com.np/",
+    label: "moru.com.np",
+    image: Moru,
+  },
+  { date: "2024", title: "Help Me Add", subtitle: "My Experience Timeline" },
+];
+
+const skills = [
+  { name: "HTML", src: HTML },
+  { name: "CSS", src: CSS },
+  { name: "JavaScript", src: JS },
+  { name: "React", src: ReactJS },
+  { name: "MongoDB", src: Mongo },
+  { name: "Next.js", src: Next, round: true },
+  { name: "Git", src: Git },
+  { name: "GitHub", src: Github },
+];
+
+const tile =
+  "h-20 w-20 shrink-0 rounded-[20px] sm:h-28 sm:w-28 lg:h-[150px] lg:w-[150px]";
+
 const ExperienceSkill = () => {
-  const experienceRef = useRef(null);
+  const root = useRef(null);
 
   useEffect(() => {
-    gsap.fromTo(
-      experienceRef.current,
-      {
-        opacity: 0,
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".exp-timeline", {
         y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
+        autoAlpha: 0,
         scrollTrigger: {
-          trigger: experienceRef.current,
+          trigger: root.current,
           start: "top 80%",
-          end: "90% 60%",
+          end: "top 40%",
           scrub: 1,
         },
-      }
-    );
+      });
+    }, root);
+    return () => ctx.revert();
   }, []);
+
   return (
-    <>
-      <div
-        ref={experienceRef}
-        className="text-white mt-[150px] h-[900px] w-[100%]"
-        id="experience"
-      >
-        <h1 className="text-[50px]">Experience & Skills</h1>
-        <div className="flex justify-center h-[100%] w-[100%] mt-[120px] relative">
-          <div className="absolute flex items-center left-[163px] top-[100px]">
-            <div className="text-[25px] mr-[10px]">
-              <h1>Moru: Digitial Wallet</h1>
-              <h1>https://moru.com.np/</h1>
-            </div>
-            <Image
-              src={Moru}
-              alt="moru"
-              className="h-[150px] w-[150px] rounded-[20px] object-contain "
-            />
+    <section id="experience" ref={root} className="py-16 md:py-24">
+      <SectionTitle>Experience &amp; Skills</SectionTitle>
+
+      <ol className="exp-timeline relative">
+        <span
+          aria-hidden
+          className="absolute bottom-0 left-[11px] top-0 w-px bg-white/40 md:left-1/2"
+        />
+        {experience.map((item, i) => {
+          const left = i % 2 === 0;
+          return (
+            <li
+              key={item.title}
+              className="relative pb-12 pl-12 last:pb-0 md:grid md:grid-cols-2 md:gap-x-20 md:pl-0"
+            >
+              <span
+                aria-hidden
+                className="absolute left-0 top-1 h-[22px] w-[22px] rounded-full bg-white ring-4 ring-ink md:left-1/2 md:-translate-x-1/2"
+              />
+              <div className={left ? "md:col-start-1" : "md:col-start-2"}>
+                <time
+                  className={`mb-3 block text-xl text-white/70 ${left ? "md:text-right" : ""}`}
+                >
+                  {item.date}
+                </time>
+                <div
+                  className={`flex items-center gap-4 sm:gap-6 ${left ? "md:flex-row-reverse" : ""}`}
+                >
+                  {item.image ? (
+                    <Image
+                      src={item.image}
+                      alt={`${item.title} logo`}
+                      sizes="150px"
+                      className={`${tile} object-contain`}
+                    />
+                  ) : (
+                    <div
+                      aria-hidden
+                      className={`${tile} flex items-center justify-center bg-[#D9D9D9] text-6xl leading-none text-black lg:text-8xl`}
+                    >
+                      +
+                    </div>
+                  )}
+                  <div
+                    className={`min-w-0 text-xl sm:text-2xl ${left ? "md:text-right" : ""}`}
+                  >
+                    <h3>{item.title}</h3>
+                    {item.subtitle && <p>{item.subtitle}</p>}
+                    {item.href && (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="break-all text-glow hover:underline"
+                      >
+                        {item.label}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div className="mt-16 rounded-[30px] bg-panel py-6 sm:py-8">
+        <h3 className="sr-only">Skills</h3>
+        <div className="overflow-hidden [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="flex w-max animate-marquee hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center">
+            {[0, 1].map((copy) => (
+              <ul
+                key={copy}
+                aria-hidden={copy === 1}
+                className={`flex shrink-0 items-center ${copy === 1 ? "motion-reduce:hidden" : ""}`}
+              >
+                {skills.map((s) => (
+                  <li key={s.name} className="px-3 sm:px-5">
+                    <Image
+                      src={s.src}
+                      alt={s.name}
+                      sizes="144px"
+                      className={`h-20 w-20 object-contain sm:h-28 sm:w-28 lg:h-36 lg:w-36 ${s.round ? "rounded-3xl" : ""}`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
-          <div className="absolute flex items-center right-[145px] top-[300px]">
-            <div className="h-[150px] w-[150px] bg-[#D9D9D9] flex justify-center items-center rounded-[20px]">
-              <h1 className="text-black text-[100px] text-center -mt-6">+</h1>
-            </div>
-            <div className="text-[25px] ml-[10px]">
-              <h1>Help Me Add</h1>
-              <h1>My Experience Timeline</h1>
-            </div>
-          </div>
-          <div className="h-[600px] w-[1px] bg-white"></div>
-          <div className="h-[1px] w-[180px] bg-white absolute left-[566px] top-[170px]  ">
-            <h1 className="text-[25px] -mt-[30px] ml-4">03-2023</h1>
-          </div>
-          <div className="h-[1px] w-[180px] bg-white absolute right-[566px] top-[370px]  ">
-            <h1 className="text-[25px] -mt-[30px] ml-12">2024</h1>
-          </div>
-          <div className="h-[20px] w-[20px] bg-white rounded-full absolute left-[728px] top-[160px]"></div>
-          <div className="h-[20px] w-[20px] bg-white rounded-full left-[728px] absolute top-[360px]"></div>
         </div>
       </div>
-      <div className="flex gap-[45px] items-center scroll overflow-hidden mt-[50px] h-[200px] w-[1500px] rounded-[30px] bg-[#333333] ">
-        <Image
-          src={HTML}
-          alt="html"
-          className="ml-[40px] h-[160px] w-[160px]"
-        />
-        <Image src={CSS} alt="css" className="h-[160px] w-[160px]" />
-        <Image src={JS} alt="js" className="h-[160px] w-[160px]" />
-        <Image src={ReactJS} alt="react" className="h-[160px] w-[160px]" />
-        <Image src={Mongo} alt="mongo-db" className="h-[160px] w-[160px]" />
-        <Image
-          src={Next}
-          alt="next"
-          className="h-[145px] w-[145px] rounded-[45px]"
-        />
-        <Image src={Git} alt="git" className="h-[160px] w-[160px]" />
-        <Image src={Github} alt="github" className="h-[160px] w-[160px]" />
-      </div>
-    </>
+    </section>
   );
 };
 
