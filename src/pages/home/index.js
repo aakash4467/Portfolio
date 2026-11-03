@@ -13,7 +13,7 @@ const Index = () => {
   useLocoScroll();
 
   useEffect(() => {
-    const t = setTimeout(() => setPreloader(false), 3000);
+    const t = setTimeout(() => setPreloader(false), 1700);
     return () => clearTimeout(t);
   }, []);
 
